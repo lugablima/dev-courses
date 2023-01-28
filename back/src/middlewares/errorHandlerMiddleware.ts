@@ -7,6 +7,10 @@ export default function errorHandlerMiddleware(
 	res: Response,
 	_next: NextFunction
 ) {
+	if (error.name === "BadRequestError") {
+		return res.status(400).send(error.message);
+	}
+
 	if (error.name === "UnauthorizedError") {
 		return res.status(401).send(error.message);
 	}

@@ -10,3 +10,7 @@ export function conflictError(message?: string): ApplicationError {
 export function unauthorizedError(message?: string): ApplicationError {
 	return { name: "UnauthorizedError", message: message ?? "" };
 }
+
+export function badRequestError(message?: string): ApplicationError {
+	return { name: "BadRequestError", message: message ?? "" };
+}
