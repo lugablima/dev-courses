@@ -1,5 +1,14 @@
-export interface SignUpPayload {
+import { User } from "./userType";
+
+export type SignUpPayload = Omit<User, "id" | "isAdmin" | "createdAt">;
+
+export type SignInPayload = Omit<SignUpPayload, "name">;
+
+export interface JwtData {
+	userId: number;
+}
+
+export interface ResponseSignIn {
 	name: string;
-	email: string;
-	password: string;
+	token: string;
 }

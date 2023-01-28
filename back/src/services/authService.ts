@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import * as authType from "../types/authType";
+import * as userType from "../types/userType";
 import * as userRepository from "../repositories/userRepository";
 import * as errorHandlingUtils from "../utils/errorHandlingUtils";
 
@@ -18,10 +20,41 @@ async function generateHashPassword(password: string): Promise<string> {
 	return hashedPassword;
 }
 
+async function validateCredentials({ email, password }: authType.SignInPayload): Promise<userType.User> {
+	const { rowCount: emailExists, rows: user } = await userRepository.findByEmail(email);
+	const hashedPassword: string = user[0]?.password;
+
+	if (!emailExists || !bcrypt.compareSync(password, hashedPassword)) {
+		throw errorHandlingUtils.unauthorizedError("E-mail e/ou senha inválido(s).");
+	}
+
+	return user[0];
+}
+
+function generateJwtToken(userId: number): string {
+	const data: authType.JwtData = { userId };
+	const secretKey = process.env.JWT_SECRET as jwt.Secret;
+
+	const token = jwt.sign(data, secretKey, { expiresIn: "7d" });
+
+	return token;
+}
+
 export async function signUp(userInfo: authType.SignUpPayload): Promise<void> {
 	await validateIfEmailDoesNotExist(userInfo.email);
 
 	const hashedPassword = await generateHashPassword(userInfo.password);
 
 	await userRepository.createOne({ ...userInfo, password: hashedPassword });
+}
+
+export async function signIn(userInfo: authType.SignInPayload): Promise<authType.ResponseSignIn> {
+	const { id: userId, name } = await validateCredentials(userInfo);
+
+	const responseSignIn: authType.ResponseSignIn = {
+		name,
+		token: generateJwtToken(userId),
+	};
+
+	return responseSignIn;
 }
