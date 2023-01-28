@@ -1,0 +1,6 @@
+back/node_modules
+back/dist
+back/.env*
+!back/.env.example
+back/*.eslint*
+back/.prettier*
