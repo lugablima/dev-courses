@@ -7,5 +7,9 @@ export default function errorHandlerMiddleware(
 	res: Response,
 	_next: NextFunction
 ) {
-	return res.status(500).send({ message: "Internal Server Error" });
+	if (error.name === "ConflictError") {
+		return res.status(409).send(error.message);
+	}
+
+	return res.status(500).send("Erro interno do servidor");
 }
