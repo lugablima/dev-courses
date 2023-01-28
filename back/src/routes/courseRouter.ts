@@ -9,5 +9,6 @@ const courseRouter = Router();
 
 courseRouter.get("/", courseController.listAll);
 courseRouter.post("/", upload.single("image"), validateSchema(courseSchema.create), courseController.create);
+courseRouter.patch("/deactivate/:courseId", courseController.deactivate);
 
 export default courseRouter;

@@ -21,3 +21,11 @@ export async function create(req: Request, res: Response) {
 
 	res.status(201).send("Curso criado com sucesso.");
 }
+
+export async function deactivate(req: Request, res: Response) {
+	const courseId = parseInt(req.params.courseId);
+
+	await courseService.deactivate(courseId);
+
+	res.status(200).send("Curso desativado com sucesso.");
+}

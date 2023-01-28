@@ -5,6 +5,7 @@ import * as courseType from "../types/courseType";
 import * as categoryType from "../types/categoryType";
 import { ImagePayload } from "../types/imageType";
 import * as errorHandlingUtils from "../utils/errorHandlingUtils";
+import { mapObjectToUpdateQuery } from "../utils/sqlUtils";
 
 async function validateCourseNameOrFail(courseName: string): Promise<void> {
 	const { rowCount: courseNameAlreadyExists } = await courseRepository.findByName(courseName);
@@ -26,6 +27,14 @@ async function checkIfCategoryExistsOrCreate(categoryName: string): Promise<cate
 	return categories[0];
 }
 
+async function validateIfCourseExists(courseId: number): Promise<void> {
+	const { rowCount: courseExists } = await courseRepository.findById(courseId);
+
+	if (!courseExists) {
+		throw errorHandlingUtils.notFoundError("Curso não encontrado.");
+	}
+}
+
 export async function listAll(): Promise<courseType.ResponseListAll[]> {
 	const { rows: courses } = await courseRepository.findAll();
 
@@ -41,7 +50,7 @@ export async function listAll(): Promise<courseType.ResponseListAll[]> {
 export async function create(
 	{ name, teacher, category, description }: courseType.CreatePayload,
 	imageInfo: ImagePayload
-) {
+): Promise<void> {
 	await validateCourseNameOrFail(name);
 
 	const { id: categoryId } = await checkIfCategoryExistsOrCreate(category);
@@ -49,4 +58,12 @@ export async function create(
 	const { rows: images } = await imageRepository.create(imageInfo);
 
 	await courseRepository.create({ name, teacher, categoryId, description, imageId: images[0].id });
+}
+
+export async function deactivate(courseId: number) {
+	await validateIfCourseExists(courseId);
+
+	const { objectColumns, objectValues } = mapObjectToUpdateQuery({ object: { isEnabled: false } });
+
+	await courseRepository.updateById(courseId, objectColumns, objectValues);
 }

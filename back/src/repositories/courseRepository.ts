@@ -11,6 +11,10 @@ export async function findAll() {
     `);
 }
 
+export async function findById(courseId: number) {
+	return db.query<Course, number[]>("SELECT * FROM courses WHERE id = $1", [courseId]);
+}
+
 export async function findByName(courseName: string) {
 	return db.query<Course, string[]>("SELECT * FROM courses WHERE name = $1", [courseName]);
 }
@@ -21,4 +25,11 @@ export async function create({ name, teacher, categoryId, description, imageId }
         VALUES ($1, $2, $3, $4, $5)`,
 		[name, teacher, categoryId, description, imageId]
 	);
+}
+
+export async function updateById(courseId: number, fields: string, values: unknown[]) {
+	return db.query<Course, unknown[]>(`UPDATE courses SET ${fields} WHERE id = $${values.length + 1}`, [
+		...values,
+		courseId,
+	]);
 }
