@@ -27,11 +27,23 @@ async function checkIfCategoryExistsOrCreate(categoryName: string): Promise<cate
 	return categories[0];
 }
 
-async function validateIfCourseExists(courseId: number): Promise<void> {
-	const { rowCount: courseExists } = await courseRepository.findById(courseId);
+async function validateIfCourseExists(courseId: number): Promise<courseType.Course> {
+	if (!courseId) {
+		throw errorHandlingUtils.badRequestError("Parâmetro de rota courseId inválido.");
+	}
+
+	const { rowCount: courseExists, rows: courses } = await courseRepository.findById(courseId);
 
 	if (!courseExists) {
 		throw errorHandlingUtils.notFoundError("Curso não encontrado.");
+	}
+
+	return courses[0];
+}
+
+async function validateConflictWithCourseEnabledField(course: courseType.Course, expectValue: boolean): Promise<void> {
+	if (course.isEnabled !== expectValue) {
+		throw errorHandlingUtils.conflictError("O curso já está desativado ou ativado.");
 	}
 }
 
@@ -61,9 +73,21 @@ export async function create(
 }
 
 export async function deactivate(courseId: number) {
-	await validateIfCourseExists(courseId);
+	const course = await validateIfCourseExists(courseId);
+
+	await validateConflictWithCourseEnabledField(course, true);
 
 	const { objectColumns, objectValues } = mapObjectToUpdateQuery({ object: { isEnabled: false } });
+
+	await courseRepository.updateById(courseId, objectColumns, objectValues);
+}
+
+export async function activate(courseId: number) {
+	const course = await validateIfCourseExists(courseId);
+
+	await validateConflictWithCourseEnabledField(course, false);
+
+	const { objectColumns, objectValues } = mapObjectToUpdateQuery({ object: { isEnabled: true } });
 
 	await courseRepository.updateById(courseId, objectColumns, objectValues);
 }

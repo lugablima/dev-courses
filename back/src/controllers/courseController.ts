@@ -29,3 +29,11 @@ export async function deactivate(req: Request, res: Response) {
 
 	res.status(200).send("Curso desativado com sucesso.");
 }
+
+export async function activate(req: Request, res: Response) {
+	const courseId = parseInt(req.params.courseId);
+
+	await courseService.activate(courseId);
+
+	res.status(200).send("Curso ativado com sucesso.");
+}
