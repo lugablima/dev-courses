@@ -4,3 +4,4 @@ back/.env*
 !back/.env.example
 back/*.eslint*
 back/.prettier*
+back/tables.sql
