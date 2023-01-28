@@ -7,6 +7,10 @@ export default function errorHandlerMiddleware(
 	res: Response,
 	_next: NextFunction
 ) {
+	if (error.name === "UnauthorizedError") {
+		return res.status(401).send(error.message);
+	}
+
 	if (error.name === "ConflictError") {
 		return res.status(409).send(error.message);
 	}
