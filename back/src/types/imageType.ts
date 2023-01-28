@@ -2,7 +2,7 @@ export interface Image {
 	id: number;
 	name: string;
 	type: string;
-	data: Buffer;
+	data: Buffer | string;
 }
 
 export interface ImagePayload {

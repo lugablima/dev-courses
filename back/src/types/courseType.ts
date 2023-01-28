@@ -1,3 +1,5 @@
+import { Image } from "./imageType";
+
 export interface Course {
 	id: number;
 	name: string;
@@ -11,6 +13,7 @@ export interface Course {
 
 export type ResponseListAll = Omit<Course, "categoryId" | "imageId" | "createdAt"> & {
 	category: string;
+	image: Image;
 };
 
 export type CreatePayload = Omit<ResponseListAll, "id" | "isEnabled">;

@@ -3,9 +3,11 @@ import { Course, CreateInDatabase, ResponseListAll } from "../types/courseType";
 
 export async function findAll() {
 	return db.query<ResponseListAll>(`
-        SELECT c.id, c.name, c.teacher, ca.name AS category, c.description, c.picture, c."isEnabled" 
+        SELECT c.id, c.name, c.teacher, ca.name AS category, c.description, 
+		json_build_object('id', i.id, 'name', i.name, 'type', i.type, 'data', i.data) AS image, c."isEnabled" 
         FROM courses c
         JOIN categories ca ON ca.id = c."categoryId"
+		JOIN images i ON i.id = c."imageId"
     `);
 }
 
