@@ -41,6 +41,7 @@ export async function activate(req: Request, res: Response) {
 }
 
 export async function edit(req: Request, res: Response) {
+	const userId: number = res.locals.userId;
 	const courseId = parseInt(req.params.courseId);
 	const course: courseType.EditPayload = req.body;
 	const imageInfo: ImagePayload = {
@@ -49,7 +50,7 @@ export async function edit(req: Request, res: Response) {
 		data: req.file?.buffer,
 	};
 
-	await courseService.edit(courseId, course, imageInfo);
+	await courseService.edit(userId, courseId, course, imageInfo);
 
 	res.status(200).send("Curso editado com sucesso.");
 }

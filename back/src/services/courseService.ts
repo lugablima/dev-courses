@@ -107,10 +107,13 @@ export async function activate(courseId: number, userId: number) {
 }
 
 export async function edit(
+	userId: number,
 	courseId: number,
 	courseInfo?: courseType.EditPayload,
 	imageInfo?: ImagePayload
 ): Promise<void> {
+	await validateUserWithPermission(userId);
+
 	const editInfo: courseType.EditInDatabase = {};
 
 	if (courseInfo?.name) {
