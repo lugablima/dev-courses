@@ -1,15 +1,27 @@
+import { Image } from "./imageType";
+
 export interface Course {
 	id: number;
 	name: string;
-	teacherId: number;
+	teacher: string;
 	categoryId: number;
 	description: string;
-	picture: string;
+	imageId: number;
 	isEnabled: boolean;
 	createdAt: Date;
 }
 
-export type ResponseListAll = Omit<Course, "teacherId" | "categoryId" | "createdAt"> & {
-	teacher: string;
+export type ResponseListAll = Omit<Course, "categoryId" | "imageId" | "createdAt"> & {
 	category: string;
+	image: Image;
 };
+
+export type CreatePayload = Omit<ResponseListAll, "id" | "image" | "isEnabled">;
+
+export type EditPayload = Partial<CreatePayload>;
+
+export type CreateInDatabase = Omit<Course, "id" | "isEnabled" | "createdAt"> & {
+	isEnabled?: boolean;
+};
+
+export type EditInDatabase = Partial<CreateInDatabase>;

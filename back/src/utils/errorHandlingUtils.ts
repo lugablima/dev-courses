@@ -14,3 +14,7 @@ export function unauthorizedError(message?: string): ApplicationError {
 export function badRequestError(message?: string): ApplicationError {
 	return { name: "BadRequestError", message: message ?? "" };
 }
+
+export function notFoundError(message?: string): ApplicationError {
+	return { name: "NotFoundError", message: message ?? "" };
+}
