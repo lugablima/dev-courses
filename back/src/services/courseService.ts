@@ -105,3 +105,34 @@ export async function activate(courseId: number, userId: number) {
 
 	await courseRepository.updateById(courseId, objectColumns, objectValues);
 }
+
+export async function edit(
+	courseId: number,
+	courseInfo?: courseType.EditPayload,
+	imageInfo?: ImagePayload
+): Promise<void> {
+	const editInfo: courseType.EditInDatabase = {};
+
+	if (courseInfo?.name) {
+		await validateCourseNameOrFail(courseInfo.name);
+		editInfo.name = courseInfo.name;
+	}
+	if (courseInfo?.teacher) {
+		editInfo.teacher = courseInfo.teacher;
+	}
+	if (courseInfo?.description) {
+		editInfo.description = courseInfo.description;
+	}
+	if (courseInfo?.category) {
+		const { id: categoryId } = await checkIfCategoryExistsOrCreate(courseInfo.category);
+		editInfo.categoryId = categoryId;
+	}
+	if (imageInfo?.name && imageInfo?.type && imageInfo?.data) {
+		const { rows: images } = await imageRepository.create(imageInfo);
+		editInfo.imageId = images[0].id;
+	}
+
+	const { objectColumns, objectValues } = mapObjectToUpdateQuery({ object: editInfo });
+
+	await courseRepository.updateById(courseId, objectColumns, objectValues);
+}

@@ -16,8 +16,12 @@ export type ResponseListAll = Omit<Course, "categoryId" | "imageId" | "createdAt
 	image: Image;
 };
 
-export type CreatePayload = Omit<ResponseListAll, "id" | "isEnabled">;
+export type CreatePayload = Omit<ResponseListAll, "id" | "image" | "isEnabled">;
+
+export type EditPayload = Partial<CreatePayload>;
 
 export type CreateInDatabase = Omit<Course, "id" | "isEnabled" | "createdAt"> & {
 	isEnabled?: boolean;
 };
+
+export type EditInDatabase = Partial<CreateInDatabase>;

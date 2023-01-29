@@ -10,14 +10,14 @@ export async function listAll(req: Request, res: Response) {
 }
 
 export async function create(req: Request, res: Response) {
-	const courses: courseType.CreatePayload = req.body;
-	const pictureInfo: ImagePayload = {
+	const course: courseType.CreatePayload = req.body;
+	const imageInfo: ImagePayload = {
 		name: req.file?.originalname,
 		type: req.file?.mimetype,
 		data: req.file?.buffer,
 	};
 
-	await courseService.create(courses, pictureInfo);
+	await courseService.create(course, imageInfo);
 
 	res.status(201).send("Curso criado com sucesso.");
 }
@@ -38,4 +38,18 @@ export async function activate(req: Request, res: Response) {
 	await courseService.activate(courseId, userId);
 
 	res.status(200).send("Curso ativado com sucesso.");
+}
+
+export async function edit(req: Request, res: Response) {
+	const courseId = parseInt(req.params.courseId);
+	const course: courseType.EditPayload = req.body;
+	const imageInfo: ImagePayload = {
+		name: req.file?.originalname,
+		type: req.file?.mimetype,
+		data: req.file?.buffer,
+	};
+
+	await courseService.edit(courseId, course, imageInfo);
+
+	res.status(200).send("Curso editado com sucesso.");
 }

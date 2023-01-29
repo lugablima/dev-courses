@@ -13,5 +13,6 @@ courseRouter.use(authenticateToken);
 courseRouter.post("/", upload.single("image"), validateSchema(courseSchema.create), courseController.create);
 courseRouter.patch("/deactivate/:courseId", courseController.deactivate);
 courseRouter.patch("/activate/:courseId", courseController.activate);
+courseRouter.patch("/edit/:courseId", upload.single("image"), validateSchema(courseSchema.edit), courseController.edit);
 
 export default courseRouter;
