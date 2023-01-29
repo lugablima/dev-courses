@@ -1,6 +1,7 @@
 import * as courseRepository from "../repositories/courseRepository";
 import * as categoryRepository from "../repositories/categoryRepository";
 import * as imageRepository from "../repositories/imageRepository";
+import * as userRepository from "../repositories/userRepository";
 import * as courseType from "../types/courseType";
 import * as categoryType from "../types/categoryType";
 import { ImagePayload } from "../types/imageType";
@@ -25,6 +26,15 @@ async function checkIfCategoryExistsOrCreate(categoryName: string): Promise<cate
 	}
 
 	return categories[0];
+}
+
+async function validateUserWithPermission(userId: number): Promise<void> {
+	const { rows: users } = await userRepository.findById(userId);
+	const user = users[0];
+
+	if (!user.isAdmin) {
+		throw errorHandlingUtils.unauthorizedError("Apenas o usuário administrador pode efetuar essa operação.");
+	}
 }
 
 async function validateIfCourseExists(courseId: number): Promise<courseType.Course> {
@@ -72,7 +82,9 @@ export async function create(
 	await courseRepository.create({ name, teacher, categoryId, description, imageId: images[0].id });
 }
 
-export async function deactivate(courseId: number) {
+export async function deactivate(courseId: number, userId: number) {
+	await validateUserWithPermission(userId);
+
 	const course = await validateIfCourseExists(courseId);
 
 	await validateConflictWithCourseEnabledField(course, true);
@@ -82,7 +94,9 @@ export async function deactivate(courseId: number) {
 	await courseRepository.updateById(courseId, objectColumns, objectValues);
 }
 
-export async function activate(courseId: number) {
+export async function activate(courseId: number, userId: number) {
+	await validateUserWithPermission(userId);
+
 	const course = await validateIfCourseExists(courseId);
 
 	await validateConflictWithCourseEnabledField(course, false);

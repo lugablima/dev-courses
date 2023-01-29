@@ -24,16 +24,18 @@ export async function create(req: Request, res: Response) {
 
 export async function deactivate(req: Request, res: Response) {
 	const courseId = parseInt(req.params.courseId);
+	const userId: number = res.locals.userId;
 
-	await courseService.deactivate(courseId);
+	await courseService.deactivate(courseId, userId);
 
 	res.status(200).send("Curso desativado com sucesso.");
 }
 
 export async function activate(req: Request, res: Response) {
 	const courseId = parseInt(req.params.courseId);
+	const userId: number = res.locals.userId;
 
-	await courseService.activate(courseId);
+	await courseService.activate(courseId, userId);
 
 	res.status(200).send("Curso ativado com sucesso.");
 }
