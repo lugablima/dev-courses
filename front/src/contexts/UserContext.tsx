@@ -15,6 +15,7 @@ interface UserProviderProps {
 interface User {
   name: string;
   token: string;
+  isAdmin: boolean;
 }
 
 export interface UserContext {
