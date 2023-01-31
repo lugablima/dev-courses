@@ -17,6 +17,10 @@
 
 O DevCourses é uma aplicação web de cursos, na qual é possível se cadastrar, logar, visualizar e criar algum curso. Já no caso de um usuário administrador, além das funcionalidades já descritas, também é possível ativar, desativar e editar qualquer curso.
 
+## Observações sobre o projeto
+
+Caso algum curso seja desativado pelo administrador, o usuário não será capaz de visualizá-lo na página inicial. Sendo assim, apenas o administrador é capaz de visualizar todos os cursos, tantos os ativos, quantos os desativados.     
+
 ## Variáveis de ambiente
 
 Para rodar este projeto, você precisará adicionar as seguintes variáveis de ambiente ao seu arquivo **.env** do **front-end**:
