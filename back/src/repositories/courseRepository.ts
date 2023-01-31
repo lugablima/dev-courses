@@ -8,6 +8,7 @@ export async function findAll() {
         FROM courses c
         JOIN categories ca ON ca.id = c."categoryId"
 		JOIN images i ON i.id = c."imageId"
+		ORDER BY id
     `);
 }
 
