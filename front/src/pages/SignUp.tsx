@@ -16,13 +16,14 @@ interface FormField {
 
 interface InputField {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  value?: string;
   placeholder: string;
   required: boolean;
   type: string;
   label: string;
   disabled: boolean;
   minlength?: number;
+  enctype?: string;
 }
 
 interface ButtonField {
@@ -63,7 +64,7 @@ export default function SignUp() {
 
     const promise = axios.post(URL, data);
     promise.then(() => {
-      navigate("/login");
+      navigate("/signin");
     });
     promise.catch((err) => {
       alert(err.response.data);
