@@ -11,4 +11,5 @@ export interface JwtData {
 export interface ResponseSignIn {
 	name: string;
 	token: string;
+	isAdmin: boolean;
 }

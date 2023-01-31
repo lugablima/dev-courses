@@ -5,3 +5,10 @@ back/.env*
 back/*.eslint*
 back/.prettier*
 back/tables.sql
+
+front/node_modules
+front/dist
+front/.env*
+!front/.env.example
+front/*.eslint*
+front/.prettier*

@@ -49,11 +49,12 @@ export async function signUp(userInfo: authType.SignUpPayload): Promise<void> {
 }
 
 export async function signIn(userInfo: authType.SignInPayload): Promise<authType.ResponseSignIn> {
-	const { id: userId, name } = await validateCredentials(userInfo);
+	const { id: userId, name, isAdmin } = await validateCredentials(userInfo);
 
 	const responseSignIn: authType.ResponseSignIn = {
 		name,
 		token: generateJwtToken(userId),
+		isAdmin,
 	};
 
 	return responseSignIn;

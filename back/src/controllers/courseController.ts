@@ -14,7 +14,7 @@ export async function create(req: Request, res: Response) {
 	const imageInfo: ImagePayload = {
 		name: req.file?.originalname,
 		type: req.file?.mimetype,
-		data: req.file?.buffer,
+		data: req.file?.buffer.toString("base64"),
 	};
 
 	await courseService.create(course, imageInfo);
@@ -47,7 +47,7 @@ export async function edit(req: Request, res: Response) {
 	const imageInfo: ImagePayload = {
 		name: req.file?.originalname,
 		type: req.file?.mimetype,
-		data: req.file?.buffer,
+		data: req.file?.buffer.toString("base64"),
 	};
 
 	await courseService.edit(userId, courseId, course, imageInfo);

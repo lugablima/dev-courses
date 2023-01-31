@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #334557;
+  --secondary: #2de2de;
+  --tertiary: #2aaec0;
+  --gray-01: #f2f2f2;
+  --gray-02: #e9e9e9;
+  --gray-03: #cacaca;
+  --gray-04: #7c8fa3;
+  --gradient-primary: linear-gradient(180deg, #2de2de 0%, #2aaec0 100%);
+  --gradient-background: linear-gradient(162.46deg, #334557 0%, #171c22 100%);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+
+  background-color: var(--gray-01);
+  color: var(--primary);
+  min-width: 100vw;
+  min-height: 100vh;
+}
