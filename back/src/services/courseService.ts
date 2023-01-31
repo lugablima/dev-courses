@@ -60,12 +60,6 @@ async function validateConflictWithCourseEnabledField(course: courseType.Course,
 export async function listAll(): Promise<courseType.ResponseListAll[]> {
 	const { rows: courses } = await courseRepository.findAll();
 
-	courses.map((course) => {
-		course.image.data = course.image.data.toString("base64");
-
-		return course;
-	});
-
 	return courses;
 }
 

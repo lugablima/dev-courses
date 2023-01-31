@@ -8,5 +8,5 @@ export interface Image {
 export interface ImagePayload {
 	name?: string;
 	type?: string;
-	data?: Buffer;
+	data?: Buffer | string;
 }
