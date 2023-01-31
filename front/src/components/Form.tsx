@@ -23,6 +23,7 @@ export default function Form({ data }: FormProps) {
             required={input.required}
             disabled={input.disabled}
             minLength={input.minlength}
+            formEncType={input.enctype}
           />
         </label>
       ))}
